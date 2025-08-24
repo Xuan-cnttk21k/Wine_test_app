@@ -1,6 +1,5 @@
 import streamlit as st
 import pickle
-import joblib
 import numpy as np
 import os
 
@@ -9,16 +8,10 @@ model = None
 file_path = os.path.join(os.path.dirname(__file__), "wine_model.pkl")
 
 try:
-    # Thử load bằng pickle
     with open(file_path, "rb") as f:
         model = pickle.load(f)
-except Exception as e1:
-    try:
-        # Nếu pickle lỗi, thử joblib
-        model = joblib.load(file_path)
-    except Exception as e2:
-        st.error(f"❌ Không thể load file 'wine_model.pkl'.\n\n"
-                 f"Error pickle: {e1}\n\nError joblib: {e2}")
+except Exception as e:
+    st.error(f"❌ Không thể load file 'wine_model.pkl': {e}")
 
 if model is not None:
     st.set_page_config(page_title="Wine Classifier", page_icon="🍷", layout="wide")
